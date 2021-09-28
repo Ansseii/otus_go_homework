@@ -43,9 +43,47 @@ var text = `Как видите, он  спускается  по  лестни�
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
 
+var letters = "z x y c d s a"
+
+var fancyLetters = `Ⓒ Ⓒ Ⓐ Ⓐ Ⓓ`
+
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
 		require.Len(t, Top10(""), 0)
+	})
+
+	t.Run("only punctuation symbols", func(t *testing.T) {
+		expected := []string{
+			"_",
+			"-",
+			"...",
+			"--",
+			".",
+			".-",
+		}
+		require.Equal(t, expected, Top10("_ _ -- - - . ... ... .- _"))
+	})
+
+	t.Run("check lexicographical order", func(t *testing.T) {
+		expected := []string{
+			"a",
+			"c",
+			"d",
+			"s",
+			"x",
+			"y",
+			"z",
+		}
+		require.Equal(t, expected, Top10(letters))
+	})
+
+	t.Run("check fancy letters", func(t *testing.T) {
+		expected := []string{
+			"Ⓐ",
+			"Ⓒ",
+			"Ⓓ",
+		}
+		require.Equal(t, expected, Top10(fancyLetters))
 	})
 
 	t.Run("positive test", func(t *testing.T) {
