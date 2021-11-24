@@ -4,6 +4,8 @@ import (
 	"errors"
 	"io"
 	"os"
+
+	"github.com/cheggaaa/pb"
 )
 
 var (
@@ -36,6 +38,11 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 	}
 
 	limit = defineLimit(openedStat.Size(), offset, limit)
+
+	progressBar := pb.New64(limit)
+	progressBar.SetUnits(pb.U_BYTES)
+	progressBar.Start()
+	defer progressBar.Finish()
 
 	if _, err = io.CopyN(copied, opened, limit); err != nil {
 		return err
